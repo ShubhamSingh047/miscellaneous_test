@@ -1,37 +1,63 @@
-import React, { useState, useRef } from "react";
+import React, { useEffect, useState } from "react";
 
 const Counter = () => {
   const [count, setCount] = useState(0);
-  const [isRunning, setIsRunning] = useState(false);
-  const interval = useRef(null);
+  const [intervalId, setIntervalId] = useState(null);
 
-  const startCounter = () => {
-    if (!isRunning) {
-      setIsRunning(true);
-      interval.current = setInterval(() => {
-        setCount((prevState) => prevState + 1);
-      }, 1000);
-    }
+  const handleStart = () => {
+    setIntervalId(
+      setInterval(() => {
+        setCount((prev) => prev + 1);
+      }, 1000)
+    );
+  };
+  const handleStop = () => {
+    clearInterval(intervalId);
   };
 
-  const stopCounter = () => {
-    clearInterval(interval.current);
-    setIsRunning(false);
-  };
+  useEffect(() => {
+    return () => clearInterval(intervalId);
+  }, [intervalId]);
 
-  const resetCounter = () => {
-    clearInterval(interval.current);
-    setIsRunning(false);
-    setCount(0);
-  };
   return (
     <>
-      <h1>Counter:{count}</h1>
-      <button onClick={startCounter}>start</button>
-      <button onClick={stopCounter}>stop</button>
-      <button onClick={resetCounter}>reset</button>
+      <div>Counter:{count}</div>
+      <button onClick={handleStart}>start</button>
+      <button onClick={handleStop}>stop</button>
     </>
   );
 };
 
 export default Counter;
+
+/* using ref
+
+import React, { useRef, useState } from "react";
+
+function Counter() {
+  const [Count, setCount] = useState(0);
+  const ref = useRef(null);
+  const handleStart = () => {
+    if (!ref.current) {
+      ref.current = setInterval(() => {
+        setCount((prev) => prev + 1);
+      }, 1000);
+    }
+  };
+
+  const handleStop = () => {
+    clearInterval(ref.current);
+    ref.current=null;
+  };
+
+  return (
+    <>
+      <div>Counter:{Count}</div>
+      <button onClick={handleStart}>start</button>
+      <button onClick={handleStop}>stop</button>
+    </>
+  );
+}
+
+export default Counter;
+*/
