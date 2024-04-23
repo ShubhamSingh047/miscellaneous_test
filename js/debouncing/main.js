@@ -47,6 +47,7 @@ document
  * !implemention throathling
  */
 
+/*
 function throathling(func, delay) {
   let intila = 0;
   return function () {
@@ -65,3 +66,5 @@ function formSubmit() {
 const throatlle = throathling(formSubmit, 5000);
 
 document.querySelector("button").addEventListener("click", throatlle);
+*/
+
